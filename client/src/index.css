@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(20, 14.3%, 4.1%);
+  --muted: hsl(60, 4.8%, 95.9%);
+  --muted-foreground: hsl(25, 5.3%, 44.7%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(20, 14.3%, 4.1%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(20, 14.3%, 4.1%);
+  --border: hsl(20, 5.9%, 90%);
+  --input: hsl(20, 5.9%, 90%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(60, 4.8%, 95.9%);
+  --secondary-foreground: hsl(24, 9.8%, 10%);
+  --accent: hsl(60, 4.8%, 95.9%);
+  --accent-foreground: hsl(24, 9.8%, 10%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(60, 9.1%, 97.8%);
+  --ring: hsl(20, 14.3%, 4.1%);
+  --radius: 0.5rem;
+  
+  /* Calendar specific colors */
+  --calendar-bg: hsl(0, 0%, 98%);
+  --calendar-border: hsl(20, 5.9%, 90%);
+  --calendar-hover: hsl(60, 4.8%, 95.9%);
+  --calendar-selected: hsl(207, 90%, 94%);
+  --calendar-today: hsl(207, 90%, 54%);
+  
+  /* Event type colors */
+  --event-holiday: hsl(0, 84.2%, 60.2%);
+  --event-holiday-bg: hsl(0, 93%, 94%);
+  --event-marketing: hsl(207, 90%, 54%);
+  --event-marketing-bg: hsl(207, 100%, 94%);
+  --event-custom: hsl(142, 71%, 45%);
+  --event-custom-bg: hsl(142, 76%, 94%);
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+  
+  /* Calendar dark mode colors */
+  --calendar-bg: hsl(240, 10%, 3.9%);
+  --calendar-border: hsl(240, 3.7%, 15.9%);
+  --calendar-hover: hsl(240, 3.7%, 15.9%);
+  --calendar-selected: hsl(207, 90%, 20%);
+  --calendar-today: hsl(207, 90%, 54%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .calendar-cell {
+    @apply min-h-[120px] p-3 border-b border-r border-calendar-border hover:bg-calendar-hover transition-colors cursor-pointer;
+  }
+  
+  .calendar-cell-today {
+    @apply bg-calendar-selected border-2 border-calendar-today;
+  }
+  
+  .calendar-cell-other-month {
+    @apply text-muted-foreground;
+  }
+  
+  .event-badge {
+    @apply text-xs px-2 py-1 rounded truncate cursor-move transition-all;
+  }
+  
+  .event-holiday {
+    @apply bg-event-holiday-bg text-red-800;
+  }
+  
+  .event-marketing {
+    @apply bg-event-marketing-bg text-blue-800;
+  }
+  
+  .event-custom {
+    @apply bg-event-custom-bg text-green-800;
+  }
+  
+  .recommendation-card {
+    @apply p-4 border rounded-lg transition-all hover:shadow-md;
+  }
+  
+  .recommendation-high {
+    @apply bg-green-50 border-green-200;
+  }
+  
+  .recommendation-medium {
+    @apply bg-amber-50 border-amber-200;
+  }
+  
+  .recommendation-low {
+    @apply bg-blue-50 border-blue-200;
+  }
+}
+
+@layer utilities {
+  .drag-preview {
+    @apply opacity-75 transform scale-95;
+  }
+  
+  .drop-target {
+    @apply ring-2 ring-primary ring-opacity-50 bg-primary bg-opacity-10;
+  }
+  
+  .lunar-text {
+    @apply text-xs text-muted-foreground font-light;
+  }
+  
+  .event-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0;
+  }
+  
+  .animate-slide-up {
+    animation: slide-up 0.3s ease-out;
+  }
+  
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* Custom scrollbar */
+.calendar-sidebar {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted-foreground)) hsl(var(--muted));
+}
+
+.calendar-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.calendar-sidebar::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+.calendar-sidebar::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground));
+  border-radius: 3px;
+}
+
+.calendar-sidebar::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--foreground));
+}

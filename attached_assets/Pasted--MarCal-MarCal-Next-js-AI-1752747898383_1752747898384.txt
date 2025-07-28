@@ -1,0 +1,229 @@
+# MarCal 项目文档
+
+## 项目概述
+
+**MarCal** 是一个基于 Next.js 的智能营销日历应用，旨在帮助用户管理和规划各种营销活动、节假日和自定义事件。该项目集成了 AI 推荐功能，支持多语言和多地区，提供直观的日历视图和拖拽式事件管理。
+
+## 技术栈
+
+### 前端框架
+- **Next.js 15.3.5** - React 全栈框架
+- **React 19.0.0** - 用户界面库
+- **TypeScript 5** - 类型安全的 JavaScript
+- **Tailwind CSS 4** - 实用优先的 CSS 框架
+
+### 核心功能库
+- **@dnd-kit** - 拖拽功能实现
+- **Framer Motion** - 动画和过渡效果
+- **date-fns** - 日期处理工具
+- **lunar-typescript** - 农历支持
+
+### 数据库与后端
+- **Supabase** - 后端即服务，提供数据库和 API
+- **OpenAI** - AI 推荐功能
+
+### 国际化
+- **next-intl** - Next.js 国际化解决方案
+- **i18next** - 国际化框架
+- **next-i18n-router** - 路由国际化
+
+### UI 组件
+- **React Toastify** - 通知组件
+- **Remixicon** - 图标库
+
+## 项目结构
+
+```
+marcal/
+├── src/
+│   ├── app/
+│   │   ├── [locale]/           # 国际化路由
+│   │   ├── globals.css         # 全局样式
+│   │   └── i18n/              # 国际化配置
+│   ├── components/            # React 组件
+│   │   ├── CalendarGrid.tsx   # 日历网格组件
+│   │   ├── CalendarView.tsx   # 日历视图组件
+│   │   ├── EventDialog.tsx    # 事件对话框
+│   │   ├── EventSidebar.tsx   # 事件侧边栏
+│   │   ├── Header.tsx         # 页面头部
+│   │   ├── RecommendationPanel.tsx # AI推荐面板
+│   │   ├── Sidebar.tsx        # 左侧边栏
+│   │   └── ...
+│   ├── contexts/              # React Context
+│   │   ├── DateContext.tsx    # 日期状态管理
+│   │   ├── EventContext.tsx   # 事件状态管理
+│   │   ├── FilterContext.tsx  # 筛选状态管理
+│   │   ├── RecommendationContext.tsx # AI推荐状态管理
+│   │   └── RegionContext.tsx  # 地区状态管理
+│   ├── lib/
+│   │   ├── api/              # API 接口
+│   │   ├── supabase.ts       # Supabase 配置
+│   │   └── utils.ts          # 工具函数
+│   └── types/
+│       └── database.types.ts  # 数据库类型定义
+├── public/                   # 静态资源
+├── package.json             # 项目依赖
+├── tailwind.config.ts       # Tailwind 配置
+├── tsconfig.json           # TypeScript 配置
+└── next.config.ts          # Next.js 配置
+```
+
+## 核心功能
+
+### 1. 日历管理
+- **多视图支持**: 月视图、列表视图
+- **拖拽操作**: 支持事件的拖拽创建和移动
+- **农历显示**: 集成农历日期显示
+- **响应式设计**: 适配不同屏幕尺寸
+
+### 2. 事件管理
+- **事件类型**: 法定节假日、营销活动、本地节日、自定义活动
+- **CRUD 操作**: 创建、读取、更新、删除事件
+- **事件筛选**: 按类型、地区、日期筛选
+- **批量操作**: 支持批量导入和管理
+
+### 3. AI 智能推荐
+- **个性化推荐**: 基于用户偏好和历史数据
+- **置信度评分**: 显示推荐的可信度
+- **推荐管理**: 接受、拒绝、归档推荐
+- **自动刷新**: 定期更新推荐内容
+
+### 4. 多地区支持
+- **地区管理**: 支持多个国家和地区
+- **时区处理**: 自动处理不同时区
+- **本地化节假日**: 各地区特有的节假日
+
+### 5. 国际化
+- **多语言支持**: 中文、英文等多语言
+- **动态切换**: 实时语言切换
+- **本地化内容**: 根据地区显示相应内容
+
+## 数据库设计
+
+### 主要表结构
+
+#### regions (地区表)
+- `id`: 主键
+- `name`: 地区名称
+- `code`: 地区代码
+- `timezone`: 时区
+
+#### holidays (节假日表)
+- `id`: 主键
+- `name`: 节假日名称
+- `description`: 描述
+- `date`: 日期
+- `region_id`: 地区ID
+- `type`: 类型
+
+#### marketing_events (营销事件表)
+- `id`: 主键
+- `title`: 标题
+- `description`: 描述
+- `start_date`: 开始日期
+- `end_date`: 结束日期
+- `region_id`: 地区ID
+- `category`: 分类
+
+#### recommendations (推荐表)
+- `id`: 主键
+- `title`: 推荐标题
+- `description`: 推荐描述
+- `confidence_score`: 置信度分数
+- `status`: 状态
+- `region_id`: 地区ID
+
+## 开发指南
+
+### 环境要求
+- Node.js 18+
+- npm/yarn/pnpm
+- Supabase 账户
+- OpenAI API 密钥
+
+### 安装步骤
+
+1. **克隆项目**
+```bash
+git clone <repository-url>
+cd marcal
+```
+
+2. **安装依赖**
+```bash
+npm install
+# 或
+yarn install
+# 或
+pnpm install
+```
+
+3. **环境配置**
+创建 `.env.local` 文件：
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+OPENAI_API_KEY=your_openai_api_key
+```
+
+4. **启动开发服务器**
+```bash
+npm run dev
+# 或
+yarn dev
+# 或
+pnpm dev
+```
+
+5. **访问应用**
+打开 [http://localhost:3000](http://localhost:3000)
+
+### 构建部署
+
+```bash
+# 构建生产版本
+npm run build
+
+# 启动生产服务器
+npm run start
+
+# 代码检查
+npm run lint
+```
+
+## 组件说明
+
+### CalendarView
+主日历视图组件，负责显示月历和处理日期相关交互。
+
+### EventSidebar
+右侧事件侧边栏，包含活动模块拖拽区域和AI推荐面板。
+
+### RecommendationPanel
+AI推荐面板，显示个性化推荐并提供交互功能。
+
+### EventDialog
+事件编辑对话框，用于创建和编辑事件。
+
+## API 接口
+
+### 事件相关
+- `GET /api/events` - 获取事件列表
+- `POST /api/events` - 创建新事件
+- `PUT /api/events/:id` - 更新事件
+- `DELETE /api/events/:id` - 删除事件
+
+### 推荐相关
+- `GET /api/recommendations` - 获取推荐列表
+- `POST /api/recommendations/generate` - 生成新推荐
+- `PUT /api/recommendations/:id/accept` - 接受推荐
+- `PUT /api/recommendations/:id/reject` - 拒绝推荐
+
+## 部署说明
+
+### Vercel 部署
+1. 连接 GitHub 仓库到 Vercel
+2. 配置环境变量
+3. 自动部署
+
+ 

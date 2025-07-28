@@ -1,0 +1,60 @@
+{
+  "name": "marcal-desktop",
+  "version": "1.0.0",
+  "description": "MarCal 跨区域营销日历桌面应用",
+  "main": "main.js",
+  "author": "MarCal Team",
+  "license": "MIT",
+  "homepage": "./",
+  "dependencies": {
+    "electron": "^28.0.0"
+  },
+  "devDependencies": {
+    "electron-builder": "^24.9.1",
+    "electron-packager": "^17.1.1"
+  },
+  "build": {
+    "appId": "com.marcal.desktop",
+    "productName": "MarCal",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "assets/**/*",
+      "../client/dist/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64", "ia32"]
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": ["x64"]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}
